@@ -72,7 +72,13 @@ def get_out_values(cur_npz_dir='./inferrence_npz/nonhardware_fx_sep_out.npz', cl
 
     return out_lib
 
-def infer_from_NL_and_fem_fx(model, npz_path='./pelvis_only_224_test_hot_nonhardware.npz', class_int = 2):
+# Can get threshold values from the whole validation data, and input into man_thresh_val as a list for class 0 and fem_fx
+# sep:  man_thresh_val=[0.46868384, 0.5437456]
+# consold: man_thresh_val=[0.71493226, 0.03784376]
+# grouped: man_thresh_val=[0.19280155, 0.8270937]
+# fem_vs_nonfem: man_thresh_val=[0.32999614, 0.10996514]
+# fem_only: man_thresh_val=[0.9664069, 0.034231238]
+def infer_from_NL_and_fem_fx(model, npz_path='./pelvis_only_224_test_hot_nonhardware.npz', class_int = 2, man_thresh_val=None):
     imgs, ids, labels, _ = read_npz_hotlabel(npz_path)
 
     ind_labels = np.argmax(labels, axis=1)
@@ -95,7 +101,7 @@ def infer_from_NL_and_fem_fx(model, npz_path='./pelvis_only_224_test_hot_nonhard
     class_l = [0] + [class_int]
 
     # This method is ONLY look at ONE class vs ONE other since we filter out the rest.
-    for i in class_l:
+    for c_n, i in enumerate(class_l):
         class_indicator = np.where(remapped_ind_labels == i, 1, 0)
         prediction_class_indicator = np.where(ind_predictions == i, 1, 0)
         fpr, tpr, thresholds = metrics.roc_curve(y_true=class_indicator, y_score=predictions[..., i])
@@ -114,7 +120,7 @@ def infer_from_NL_and_fem_fx(model, npz_path='./pelvis_only_224_test_hot_nonhard
         auc_95_CI = 1.96 * se
         print('class', i, 'auc is', auc_val, '+-', auc_95_CI)
 
-        thresh_val = show_metrics(predictions[..., i], class_indicator, thresholds)
+        thresh_val = show_metrics(predictions[..., i], class_indicator, thresholds, single_man_thresh_val=man_thresh_val[c_n])
 
         post_threshold = np.array(predictions[..., i] > thresh_val, np.int)
         tn, fp, fn, tp = metrics.confusion_matrix(class_indicator, post_threshold).ravel()

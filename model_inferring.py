@@ -319,7 +319,7 @@ def custom_consold_eval_models(class_str_LIST_lists, class_int_LIST_list, npz_li
         fig.savefig(save_auc, dpi=400, format='tiff')
     plt.show()
 
-def show_metrics(predict_1, labels, thresh_1):
+def show_metrics(predict_1, labels, thresh_1, single_man_thresh_val=None):
 
     labels_argmax = labels
     eps = 1e-5
@@ -361,6 +361,21 @@ def show_metrics(predict_1, labels, thresh_1):
             best_ppv = ppv
             best_npv = npv
 
+        if single_man_thresh_val is not None:
+            a_thresholded = np.array(predict_1 > single_man_thresh_val, np.int)
+            tn, fp, fn, tp = metrics.confusion_matrix(labels_argmax, a_thresholded).ravel()
+            sens = tp / (tp + fn + eps)
+            spec = tn / (tn + fp + eps)
+            ppv = tp / (tp + fp + eps)
+            npv = tn / (tn + fn + eps)
+            acc = (tp + tn) / (tp + tn + fp + fn + eps)
+            best_sens = sens
+            best_spec = spec
+            best_ppv = ppv
+            best_npv = npv
+            best_thres_val = single_man_thresh_val
+            break
+
         thresh_list.append(i)
         sens_list.append(sens)
         spec_list.append(spec)
@@ -375,6 +390,7 @@ def show_metrics(predict_1, labels, thresh_1):
     ppv_ci = 1.96 * math.sqrt((best_ppv * (1 - best_ppv))/ n)
     npv_ci = 1.96 * math.sqrt((best_npv * (1 - best_npv))/ n)
 
+    print('Best threshold val:', best_thres_val)
     print('Best threshold: {}. Sensitivity {} +- {}.  Specificity of {} +- {}.'.format(best_thresh, best_sens, sens_ci, best_spec, spec_ci))
     print('PPV {} +- {} and NPV {} +- {}'.format(best_ppv, ppv_ci, best_npv, npv_ci))
 
