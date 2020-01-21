@@ -185,21 +185,23 @@ def sep_vs_fem(sep_lib=None, fem_only_lib=None, sep_class_int = 4, fem_class_int
     tot_pos_2 = tp2 + fp2
     ppv1 = tp1 / tot_pos_1
     ppv2 = tp2 / tot_pos_2
+    print('class 0 ppv1 {} and ppv2 {}'.format(ppv1, ppv2))
     pooled_ppv = (tp1 + tp2) / (tot_pos_1 + tot_pos_2)
     both_tp = np.sum(((sep_0_outs == 1) & (fem_0_outs == 1)) & (sep_0_labels == 1))
     both_fp = np.sum(((sep_0_outs == 1) & (fem_0_outs == 1)) & (sep_0_labels == 0))
     pos_C = (both_tp*(1 - pooled_ppv)**2 + (both_fp*pooled_ppv**2)) / (tot_pos_1 + tot_pos_2)
-    ppv_chi_square_test_value = (ppv1 - ppv2)**2 / (pooled_ppv * (1 - pooled_ppv) - 2 * pos_C * (1/tot_pos_1 + 1/tot_pos_2))
+    ppv_chi_square_test_value = (ppv1 - ppv2)**2 / ((pooled_ppv * (1 - pooled_ppv) - 2 * pos_C) * (1/tot_pos_1 + 1/tot_pos_2))
 
     tot_neg_1 = tn1 + fn1
     tot_neg_2 = tn2 + fn2
     npv1 = tn1 / tot_neg_1
     npv2 = tn2 / tot_neg_2
+    print('class 0 npv1 {} and npv2 {}'.format(npv1, npv2))
     pooled_npv = (tn1 + tn2) / (tot_neg_1 + tot_neg_2)
     both_tn = np.sum(((sep_0_outs == 0) & (fem_0_outs == 0)) & (sep_0_labels == 0))
     both_fn = np.sum(((sep_0_outs == 0) & (fem_0_outs == 0)) & (sep_0_labels == 1))
-    neg_C = (both_tn*(1 - pooled_npv)**2 + (both_fn*pooled_npv**2)/ (tot_neg_1 + tot_neg_2))
-    npv_chi_square_test_value = (npv1 - npv2)**2 / (pooled_npv * (1 - pooled_npv) - 2 * neg_C * (1/tot_neg_1 + 1/tot_neg_2))
+    neg_C = (both_tn*(1 - pooled_npv)**2 + (both_fn*pooled_npv**2))/ (tot_neg_1 + tot_neg_2)
+    npv_chi_square_test_value = (npv1 - npv2)**2 / ((pooled_npv * (1 - pooled_npv) - 2 * neg_C) * (1/tot_neg_1 + 1/tot_neg_2))
 
     print('Class 0 ppv chisquare: {}.  npv chisquare: {}'.format(ppv_chi_square_test_value, npv_chi_square_test_value))
 
@@ -210,21 +212,23 @@ def sep_vs_fem(sep_lib=None, fem_only_lib=None, sep_class_int = 4, fem_class_int
     tot_pos_2 = tp2 + fp2
     ppv1 = tp1 / tot_pos_1
     ppv2 = tp2 / tot_pos_2
+    print('class 1 ppv1 {} and ppv2 {}'.format(ppv1, ppv2))
     pooled_ppv = (tp1 + tp2) / (tot_pos_1 + tot_pos_2)
     both_tp = np.sum(((sep_pos_outs == 1) & (fem_pos_outs == 1)) & (sep_pos_labels == 1))
     both_fp = np.sum(((sep_pos_outs == 1) & (fem_pos_outs == 1)) & (sep_pos_labels == 0))
     pos_C = (both_tp * (1 - pooled_ppv) ** 2 + (both_fp * pooled_ppv ** 2)) / (tot_pos_1 + tot_pos_2)
-    ppv_chi_square_test_value = (ppv1 - ppv2) ** 2 / (pooled_ppv * (1 - pooled_ppv) - 2 * pos_C * (1 / tot_pos_1 + 1 / tot_pos_2))
+    ppv_chi_square_test_value = (ppv1 - ppv2) ** 2 / ((pooled_ppv * (1 - pooled_ppv) - 2 * pos_C) * (1 / tot_pos_1 + 1 / tot_pos_2))
 
     tot_neg_1 = tn1 + fn1
     tot_neg_2 = tn2 + fn2
     npv1 = tn1 / tot_neg_1
     npv2 = tn2 / tot_neg_2
+    print('class 1 npv1 {} and npv2 {}'.format(npv1, npv2))
     pooled_npv = (tn1 + tn2) / (tot_neg_1 + tot_neg_2)
     both_tn = np.sum(((sep_pos_outs == 0) & (fem_pos_outs == 0)) & (sep_pos_labels == 0))
     both_fn = np.sum(((sep_pos_outs == 0) & (fem_pos_outs == 0)) & (sep_pos_labels == 1))
-    neg_C = (both_tn * (1 - pooled_npv) ** 2 + (both_fn * pooled_npv ** 2) / (tot_neg_1 + tot_neg_2))
-    npv_chi_square_test_value = (npv1 - npv2) ** 2 / (pooled_npv * (1 - pooled_npv) - 2 * neg_C * (1 / tot_neg_1 + 1 / tot_neg_2))
+    neg_C = (both_tn * (1 - pooled_npv) ** 2 + (both_fn * pooled_npv ** 2)) / (tot_neg_1 + tot_neg_2)
+    npv_chi_square_test_value = (npv1 - npv2) ** 2 / ((pooled_npv * (1 - pooled_npv) - 2 * neg_C) * (1 / tot_neg_1 + 1 / tot_neg_2))
 
     print('Class Pos ppv chisquare: {}.  npv chisquare: {}'.format(ppv_chi_square_test_value, npv_chi_square_test_value))
 
