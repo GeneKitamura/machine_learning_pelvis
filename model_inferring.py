@@ -159,7 +159,7 @@ def custom_consold_eval_models(class_str_LIST_lists, class_int_LIST_list, npz_li
             se = math.sqrt((q0 + (n_pos - 1) * q1 + (n_others - 1) * q2) / (n_pos * n_others))
             auc_95_CI = 1.96 * se
             print(class_str[i], 'auc is', auc_val, '+-', auc_95_CI)
-            c_upper_ax.plot(fpr, tpr, label=(class_str[i] + ': AUC of %.2f' % auc_val), markevery=20, linestyle=line_styles[i], color=colors[i])
+            c_upper_ax.plot(fpr, tpr, label=(class_str[i] + ': %.2f' % auc_val + ' +- %.2f' % auc_95_CI), markevery=20, linestyle=line_styles[i], color=colors[i])
 
             thresh_val = show_metrics(predictions[..., i], class_indicator, thresholds)
 
@@ -196,7 +196,7 @@ def custom_consold_eval_models(class_str_LIST_lists, class_int_LIST_list, npz_li
             auc_95_CI = 1.96 * se
             print(binary_str[i], 'auc is', auc_val, '+-', auc_95_CI)
 
-            c_lower_ax.plot(fpr, tpr, label=(binary_str[i] + ': AUC of %.2f' % auc_val), markevery=20, linestyle=line_styles[i], color=colors[i])
+            c_lower_ax.plot(fpr, tpr, label=(binary_str[i] + ': %.2f' % auc_val + ' +- %.2f' % auc_95_CI), markevery=20, linestyle=line_styles[i], color=colors[i])
 
             thresh_val = show_metrics(predictions[..., i], bin_class_indicator, thresholds)
 
@@ -248,7 +248,7 @@ def custom_consold_eval_models(class_str_LIST_lists, class_int_LIST_list, npz_li
         auc_95_CI = 1.96 * se
         print('fem_vs_nonfem for class ', i, ',auc valu is', auc_val, '+-', auc_95_CI)
 
-        bin_ax.plot(fpr, tpr, label=(fem_fx_only_str[i] + ': AUC of %.2f' % auc_val), markevery=20, linestyle=line_styles[i], color=colors[i])
+        bin_ax.plot(fpr, tpr, label=(fem_fx_only_str[i] + ': %.2f' % auc_val + ' +- %.2f' % auc_95_CI), markevery=20, linestyle=line_styles[i], color=colors[i])
 
         thresh_val = show_metrics(predictions[..., i], class_indicator, thresholds)
 
@@ -300,7 +300,7 @@ def custom_consold_eval_models(class_str_LIST_lists, class_int_LIST_list, npz_li
         auc_95_CI = 1.96 * se
         print('Binary for class', i, ', auc val is', auc_val, '+-', auc_95_CI)
 
-        bin_ax.plot(fpr, tpr, label=(binary_str[i] + ': AUC of %.2f' % auc_val), markevery=20, linestyle=line_styles[i], color=colors[i])
+        bin_ax.plot(fpr, tpr, label=(binary_str[i] + ': %.2f' % auc_val + ' +- %.2f' % auc_95_CI), markevery=20, linestyle=line_styles[i], color=colors[i])
 
         thresh_val = show_metrics(predictions[..., i], class_indicator, thresholds)
 

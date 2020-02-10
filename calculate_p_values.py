@@ -308,10 +308,13 @@ def sep_vs_fem(sep_lib=None, fem_only_lib=None, sep_class_int = 4, fem_class_int
 
     both_auc_SE = math.sqrt(sep_lib['0_auc_SE'] ** 2 + fem_only_lib['0_auc_SE'] ** 2 - 2 * neg_corr * sep_lib['0_auc_SE'] * fem_only_lib['0_auc_SE'])
     neg_z = (sep_lib['0_auc'] - fem_only_lib['0_auc']) / both_auc_SE
+    non_cor_neg_z = (sep_lib['0_auc'] - fem_only_lib['0_auc']) / (math.sqrt(sep_lib['0_auc_SE'] ** 2 + fem_only_lib['0_auc_SE'] ** 2))
 
     pos_both_auc_SE = math.sqrt(sep_lib[sep_auc_se] ** 2 + fem_only_lib[fem_auc_se] ** 2 - 2 * pos_corr * sep_lib[sep_auc_se] * fem_only_lib[fem_auc_se])
-    pos_z = (sep_lib[sep_auc_name] - fem_only_lib[fem_auc_name] / pos_both_auc_SE)
+    pos_z = (sep_lib[sep_auc_name] - fem_only_lib[fem_auc_name]) / pos_both_auc_SE
+    non_cor_pos_z = (sep_lib[sep_auc_name] - fem_only_lib[fem_auc_name]) / math.sqrt(sep_lib[sep_auc_se] ** 2 + fem_only_lib[fem_auc_se] ** 2)
 
+    print('non_cor_neg_z: {} non_cor_pos_z: {}'.format(non_cor_neg_z, non_cor_pos_z))
     print('neg_z:', neg_z, 'pos_z:', pos_z)
 
 def calculate_z_values_between_models():
