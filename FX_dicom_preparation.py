@@ -17,8 +17,6 @@ Metrics = keras.metrics
 
 def prepare_fx_excel(print_shapes=False):
     expanded_df = pd.read_excel('./expanded_useful_df.xlsx')
-    # 6263 patients with actual fx labels for a total of 11522 images
-    # 442 class 1, 64 class 2, 1825 class 4, 239 class 5, 379 class 6, 3314 negative PTS for a total of 6263
     sep_labels =  {'neg': 0, 'only_pubis': 1, 'pos_pelvis': 2, 'femur': 4, 'ace_disloc': 5, 'complex': 6}
     consold_labels = {'neg': 0, 'pelvic_ring': 3, 'femur': 4, 'ace_disloc': 5, 'complex': 6}
 
@@ -150,9 +148,6 @@ def clean_with_pos_model():
 def check_hardware_with_model(train=True):
     # Use uncropped images for this
 
-    #115 for training set out of 4949 cases (112 if using cropped 238 arrays)
-    #68 for test set out of 2571 cases (65 if using cropped 238 arrays)
-
     hard_model = keras.models.load_model('./pos_and_hardware_models/hardware_train/final_dense_model')
     model = hard_model
 
@@ -208,9 +203,6 @@ def change_labels(change_6_to_3=False, grouped=False, fem_neck_only=False, conso
 
         a_imgs, a_ids, a_labels, a_idx = read_npz_hotlabel('./pelvis_only_224_train_hot.npz')
         b_imgs, b_ids, b_labels, b_idx = read_npz_hotlabel('./pelvis_only_224_test_hot.npz')
-
-        #hardware: 115 for training set out of 4949 cases (112 if using cropped 238 arrays)
-        #hardware: 68 for test set out of 2571 cases (65 if using cropped 238 arrays)
 
         for i in range(7):
             print(i, a_labels[np.argmax(a_labels, axis=1) == i].shape)
