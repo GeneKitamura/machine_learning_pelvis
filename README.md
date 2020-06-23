@@ -1,0 +1,1 @@
+Kitamura, Gene.  Deep learning evaluation of pelvic radiographs for position, hardware presence, and fracture detection.  European Journal of Radiology (2020). https://doi.org/10.1016/j.ejrad.2020.109139
